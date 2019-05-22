@@ -1,0 +1,3 @@
+tar -vcpf - . | ssh server2 'cd /data; tar -xvpf -'
+--- Above will copy all file structure from the current folder to /data on server2
+
