@@ -1,1 +1,63 @@
 ZFS 
+
+zpool create -f -o ashift=12 -O atime=off  -O normalization=formD -O recordsize=8k -O xattr=sa  pool1 raidz2 /dev/sdc  /dev/sdd  /dev/sde  /dev/sdf  /dev/sdg  /dev/sdh  /dev/sdi  /dev/sdj  /dev/sdk  /dev/sdl  /dev/sdm  /dev/sdn  
+
+--- zpool add  -f pool1 log /dev/nvme0n1
+/dev/nvme0n1 contains a corrupt primary EFI label.
+[root@icpfs1 disk1]#  zpool add  -f pool1 log /dev/nvme0n1
+[root@icpfs1 disk1]# zpool status pool1
+  pool: pool1
+ state: ONLINE
+  scan: none requested
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        pool1       ONLINE       0     0     0
+          raidz2-0  ONLINE       0     0     0
+            sdc     ONLINE       0     0     0
+            sdd     ONLINE       0     0     0
+            sde     ONLINE       0     0     0
+            sdf     ONLINE       0     0     0
+            sdg     ONLINE       0     0     0
+            sdh     ONLINE       0     0     0
+            sdi     ONLINE       0     0     0
+            sdj     ONLINE       0     0     0
+            sdk     ONLINE       0     0     0
+            sdl     ONLINE       0     0     0
+            sdm     ONLINE       0     0     0
+            sdn     ONLINE       0     0     0
+        logs
+          nvme0n1   ONLINE       0     0     0
+
+Now add the log mirror ( NVME )
+
+zpool add  -f pool1 log mirror  /dev/nvme0n1 /dev/nvme1n1
+
+[root@icpfs1 disk1]#  zpool add  -f pool1 log mirror  /dev/nvme0n1 /dev/nvme1n1
+[root@icpfs1 disk1]# zpool status pool1
+  pool: pool1
+ state: ONLINE
+  scan: none requested
+config:
+
+        NAME         STATE     READ WRITE CKSUM
+        pool1        ONLINE       0     0     0
+          raidz2-0   ONLINE       0     0     0
+            sdc      ONLINE       0     0     0
+            sdd      ONLINE       0     0     0
+            sde      ONLINE       0     0     0
+            sdf      ONLINE       0     0     0
+            sdg      ONLINE       0     0     0
+            sdh      ONLINE       0     0     0
+            sdi      ONLINE       0     0     0
+            sdj      ONLINE       0     0     0
+            sdk      ONLINE       0     0     0
+            sdl      ONLINE       0     0     0
+            sdm      ONLINE       0     0     0
+            sdn      ONLINE       0     0     0
+        logs
+          mirror-1   ONLINE       0     0     0
+            nvme0n1  ONLINE       0     0     0
+            nvme1n1  ONLINE       0     0     0
+
+errors: No known data errors
