@@ -1,0 +1,6 @@
+To crete RBD devie :
+-- Create a disk :
+#rbd create --size 4096 pool1/disk1 --image-feature layering
+
+--Map the disk 
+# rbd map disk1 --name client.admin -m 1.2.3.4 -p pool1
