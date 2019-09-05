@@ -1,1 +1,51 @@
-OVS on Ubuntu 18
+Install OVS on Ubuntu 18
+# apt install openvswitch-switch
+
+
+-- Show ovs details 
+root@roxor:/# ovs-vsctl show
+31ad975c-a764-4360-8cc0-bd40b7755955
+    ovs_version: "2.9.2"
+
+
+
+-- Add a bridge which is a switch 
+root@roxor:/# ovs-vsctl add-br sw_ext
+root@roxor:/# ovs-vsctl show
+31ad975c-a764-4360-8cc0-bd40b7755955
+    Bridge sw_ext
+        Port sw_ext
+            Interface sw_ext
+                type: internal
+    ovs_version: "2.9.2"
+
+--Add a network interface to switch
+root@roxor:/# ovs-vsctl add-port sw_ext ens1f0
+root@roxor:/# ovs-vsctl show
+31ad975c-a764-4360-8cc0-bd40b7755955
+    Bridge sw_ext
+        Port sw_ext
+            Interface sw_ext
+                type: internal
+        Port "ens1f0"
+            Interface "ens1f0"
+    ovs_version: "2.9.2"
+    
+--Interface file :
+        auto ens1f1
+    iface ens1f1 inet static
+#    vlan-raw-device ens1f1
+        address 9.30.6.22
+        netmask 255.255.255.0
+        gateway 9.30.6.1
+        dns-nameservers 9.30.31.32
+        dns-search svl.ibm.com ibm.com
+
+auto ens1f0
+    iface ens1f0 inet manual
+
+auto sw_ext
+        iface sw_ext inet static
+        address 9.30.6.24
+        netmask 255.255.255.0
+
