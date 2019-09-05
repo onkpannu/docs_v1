@@ -1,0 +1,14 @@
+--Install KVM
+
+  #apt-get install qemu-kvm libvirt-bin bridge-utils virt-manager
+
+--Configure SSH for virt-manager - add following lines in sshd_config
+  AllowAgentForwarding yes
+  AllowTcpForwarding yes
+  X11UseLocalhost no
+
+--Add in sysctl.conf
+  kernel.pid_max = 4194303
+  
+--Rebbot
+  #reboot 
